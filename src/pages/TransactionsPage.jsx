@@ -99,12 +99,18 @@ function TransactionsPage() {
                 filter: 'agDateColumnFilter',
             },
             {
-                headerName: 'Updated at',
-                field: 'updatedAt',
+                headerName: 'Stoped at',
+                field: 'stopTimestamp',
                 width: 190,
                 valueFormatter: (p) =>
                     p.value ? new Date(p.value).toLocaleString(undefined, { hour12: false }) : '',
                 filter: 'agDateColumnFilter',
+            },
+            {
+                headerName: 'Time Spent Charging (min)',
+                field: 'timeSpentCharging',
+                flex: 1,
+                minWidth: 180,
             },
             {
                 headerName: 'Stopped reason',
@@ -222,7 +228,7 @@ function TransactionsPage() {
                     defaultColDef={defaultColDef}
                     quickFilterText={quickFilter}
                     pagination={true}
-                    paginationPageSize={25}
+                    paginationPageSize={100}
                     paginationPageSizeSelector={[10, 25, 50, 100]}
                     animateRows={true}
                     enableCellTextSelection={true}

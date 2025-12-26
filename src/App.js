@@ -1,17 +1,17 @@
 // src/App.js
 import React from 'react';
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ChargersPage from './pages/ChargersPage';
 import TransactionsPage from './pages/TransactionsPage';
+import ChargingNavigationTabs from './components/ChargingNavigationTabs';
 
 function App() {
   return (
     <div>
-      <nav style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-        <Link to="/chargers" style={{ marginRight: 16 }}>Chargers</Link>
-        <Link to="/transactions">Transactions</Link>
-      </nav>
+      {/* TAB NAVIGATION */}
+      <ChargingNavigationTabs />
 
+      {/* PAGE CONTENT */}
       <main style={{ padding: '20px' }}>
         <Routes>
           <Route path="/" element={<Navigate to="/chargers" replace />} />

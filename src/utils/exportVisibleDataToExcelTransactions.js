@@ -24,7 +24,8 @@ export const exportVisibleDataToExcelTransactions = (gridRef) => {
         totalKwh: "Energy (kWh)",
         totalCost: "Total cost",
         startTimestamp: "Started at",
-        updatedAt: "Updated at",
+        stopTimestamp: "Stoped at",
+        timeSpentCharging: "Time spent charging (min)",
         stoppedReason: "Stopped reason",
     };
 
