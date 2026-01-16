@@ -38,6 +38,38 @@ function TransactionsPage() {
                 width: 90,
                 filter: 'agNumberColumnFilter',
             },
+
+            // ✅ NOVO: user email
+            {
+                headerName: 'User Email',
+                field: 'userEmail',
+                width: 220,
+                filter: 'agTextColumnFilter',
+            },
+
+            // ✅ NOVO: company info (ako postoji)
+            {
+                headerName: 'Company',
+                colId: 'companyName',
+                width: 200,
+                filter: 'agTextColumnFilter',
+                valueGetter: (p) => p.data?.company?.name ?? '',
+            },
+            {
+                headerName: 'Company PIB',
+                colId: 'companyPib',
+                width: 150,
+                filter: 'agTextColumnFilter',
+                valueGetter: (p) => p.data?.company?.pib ?? '',
+            },
+            {
+                headerName: 'Company MB',
+                colId: 'companyMb',
+                width: 150,
+                filter: 'agTextColumnFilter',
+                valueGetter: (p) => p.data?.company?.mb ?? '',
+            },
+
             {
                 headerName: 'Station ID',
                 field: 'stationId',
@@ -80,14 +112,14 @@ function TransactionsPage() {
                 field: 'totalKwh',
                 width: 140,
                 filter: 'agNumberColumnFilter',
-                valueFormatter: (p) => (p.value != null ? p.value.toFixed(2) : ''),
+                valueFormatter: (p) => (p.value != null ? Number(p.value).toFixed(2) : ''),
             },
             {
                 headerName: 'Total cost',
                 field: 'totalCost',
                 width: 130,
                 filter: 'agNumberColumnFilter',
-                valueFormatter: (p) => (p.value != null ? p.value.toFixed(2) : ''),
+                valueFormatter: (p) => (p.value != null ? Number(p.value).toFixed(2) : ''),
             },
             {
                 headerName: 'Started at',

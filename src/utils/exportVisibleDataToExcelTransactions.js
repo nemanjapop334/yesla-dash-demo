@@ -12,9 +12,16 @@ export const exportVisibleDataToExcelTransactions = (gridRef) => {
         .getAllDisplayedColumns()
         .map((col) => col.getColId());
 
-    // Map field -> header label
+    // Map field/colId -> header label
     const columnDefsMap = {
         id: "ID",
+
+        // ✅ NOVO
+        userEmail: "User Email",
+        companyName: "Company",
+        companyPib: "Company PIB",
+        companyMb: "Company MB",
+
         stationId: "Station ID",
         connectorId: "Connector ID",
         locationName: "Location",
@@ -29,7 +36,8 @@ export const exportVisibleDataToExcelTransactions = (gridRef) => {
         stoppedReason: "Stopped reason",
     };
 
-    const dateFields = ["startTimestamp", "updatedAt"];
+    // Format dates for these columns (ako hoćeš i stopTimestamp - dodaj)
+    const dateFields = ["startTimestamp", "stopTimestamp", "updatedAt"];
 
     const visibleRowData = [];
 
@@ -45,6 +53,18 @@ export const exportVisibleDataToExcelTransactions = (gridRef) => {
                     // same logic as in grid: startTimestamp || createdAt
                     value = node.data?.startTimestamp || node.data?.createdAt;
                     break;
+
+                // ✅ NOVO: company valueGetter kolone
+                case "companyName":
+                    value = node.data?.company?.name ?? "";
+                    break;
+                case "companyPib":
+                    value = node.data?.company?.pib ?? "";
+                    break;
+                case "companyMb":
+                    value = node.data?.company?.mb ?? "";
+                    break;
+
                 default:
                     value = node.data?.[col];
             }
@@ -52,9 +72,7 @@ export const exportVisibleDataToExcelTransactions = (gridRef) => {
             // Format dates
             if (dateFields.includes(col) && value) {
                 try {
-                    value = new Date(value).toLocaleString("en-GB", {
-                        hour12: false,
-                    });
+                    value = new Date(value).toLocaleString("en-GB", { hour12: false });
                 } catch (e) {
                     // fallback to raw value if parsing fails
                 }
@@ -79,27 +97,20 @@ export const exportVisibleDataToExcelTransactions = (gridRef) => {
     });
 
     // Header row based on visible columns & mapping
-    const headerRow = visibleColumns.map(
-        (col) => columnDefsMap[col] || col
-    );
+    const headerRow = visibleColumns.map((col) => columnDefsMap[col] || col);
 
     const fullData = [headerRow, ...visibleRowData];
 
     const ws = XLSX.utils.aoa_to_sheet(fullData);
 
-    // Optional: style header row (works sa xlsx-style varijantom, ali možemo ostaviti)
+    // Style header row
     headerRow.forEach((_, colIdx) => {
         const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIdx });
         if (!ws[cellAddress]) return;
         ws[cellAddress].s = {
             font: { bold: true, color: { rgb: "000000" } },
-            fill: {
-                fgColor: { rgb: "D9D9D9" },
-            },
-            alignment: {
-                horizontal: "center",
-                vertical: "center",
-            },
+            fill: { fgColor: { rgb: "D9D9D9" } },
+            alignment: { horizontal: "center", vertical: "center" },
         };
     });
 
@@ -118,9 +129,10 @@ export const exportVisibleDataToExcelTransactions = (gridRef) => {
     XLSX.utils.book_append_sheet(wb, ws, "Transactions");
 
     const today = new Date();
-    const formattedDate = `${today.getFullYear()}-${String(
-        today.getMonth() + 1
-    ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    const formattedDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
+        2,
+        "0"
+    )}-${String(today.getDate()).padStart(2, "0")}`;
     const fileName = `Transactions_${formattedDate}.xlsx`;
 
     XLSX.writeFile(wb, fileName);
