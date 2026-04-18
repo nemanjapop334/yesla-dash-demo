@@ -3,6 +3,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import ChargersPage from './pages/ChargersPage';
 import TransactionsPage from './pages/TransactionsPage';
+import UsersPage from './pages/UsersPage';
 import ChargingNavigationTabs from './components/ChargingNavigationTabs';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<Navigate to="/chargers" replace />} />
           <Route path="/chargers" element={<ChargersPage />} />
           <Route path="/transactions" element={<TransactionsPage />} />
+          <Route path="/users" element={<UsersPage />} />
         </Routes>
       </main>
     </div>

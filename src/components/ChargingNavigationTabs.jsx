@@ -32,6 +32,15 @@ function ChargingNavigationTabs() {
                         Transactions
                     </Nav.Link>
                 </Nav.Item>
+
+                <Nav.Item>
+                    <Nav.Link
+                        href="/users"
+                        style={linkStyle(location.pathname === '/users')}
+                    >
+                        Users
+                    </Nav.Link>
+                </Nav.Item>
             </Nav>
         </Navbar>
     );

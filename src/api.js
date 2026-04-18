@@ -33,3 +33,10 @@ export async function stopTransaction(transactionId) {
     if (!res.ok) throw new Error('Failed to stop transaction');
     return res.json();
 }
+
+// --- USERS ---
+export async function fetchUsers() {
+    const res = await fetch(`${API_BASE}/users`);
+    if (!res.ok) throw new Error('Failed to fetch users');
+    return res.json();
+}
