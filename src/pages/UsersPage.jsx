@@ -36,6 +36,17 @@ function UsersPage() {
             { headerName: 'Phone', field: 'phone', width: 140 },
             { headerName: 'User ref.', field: 'userReference', width: 130 },
             {
+                headerName: 'Has Card',
+                field: 'hasCard',
+                width: 120,
+                valueFormatter: (p) => (p.value ? 'Yes' : 'No'),
+                cellStyle: (p) => ({
+                    color: p.value ? '#198754' : '#dc3545',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                }),
+            },
+            {
                 headerName: 'Onboarding',
                 field: 'hasCompletedOnboarding',
                 width: 130,
