@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 function ChargingNavigationTabs() {
     const location = useLocation();
+    const hideUsers = process.env.REACT_APP_HIDE_USERS === 'true';
 
     const linkStyle = (active) => ({
         fontWeight: 'bold',
@@ -33,14 +34,16 @@ function ChargingNavigationTabs() {
                     </Nav.Link>
                 </Nav.Item>
 
-                <Nav.Item>
-                    <Nav.Link
-                        href="/users"
-                        style={linkStyle(location.pathname === '/users')}
-                    >
-                        Users
-                    </Nav.Link>
-                </Nav.Item>
+                {!hideUsers ? (
+                    <Nav.Item>
+                        <Nav.Link
+                            href="/users"
+                            style={linkStyle(location.pathname === '/users')}
+                        >
+                            Users
+                        </Nav.Link>
+                    </Nav.Item>
+                ) : null}
             </Nav>
         </Navbar>
     );

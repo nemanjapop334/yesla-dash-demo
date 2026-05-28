@@ -14,6 +14,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 function TransactionsPage() {
     const [quickFilter, setQuickFilter] = useState('');
     const gridRef = useRef(null);
+    const hideUsers = process.env.REACT_APP_HIDE_USERS === 'true';
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ['transactions'],
@@ -31,45 +32,14 @@ function TransactionsPage() {
     );
 
     const columnDefs = useMemo(
-        () => [
+        () => {
+            const cols = [
             {
                 headerName: 'ID',
                 field: 'id',
                 width: 90,
                 filter: 'agNumberColumnFilter',
             },
-
-            // ✅ NOVO: user email
-            {
-                headerName: 'User Email',
-                field: 'userEmail',
-                width: 220,
-                filter: 'agTextColumnFilter',
-            },
-
-            // ✅ NOVO: company info (ako postoji)
-            {
-                headerName: 'Company',
-                colId: 'companyName',
-                width: 200,
-                filter: 'agTextColumnFilter',
-                valueGetter: (p) => p.data?.company?.name ?? '',
-            },
-            {
-                headerName: 'Company PIB',
-                colId: 'companyPib',
-                width: 150,
-                filter: 'agTextColumnFilter',
-                valueGetter: (p) => p.data?.company?.pib ?? '',
-            },
-            {
-                headerName: 'Company MB',
-                colId: 'companyMb',
-                width: 150,
-                filter: 'agTextColumnFilter',
-                valueGetter: (p) => p.data?.company?.mb ?? '',
-            },
-
             {
                 headerName: 'Station ID',
                 field: 'stationId',
@@ -90,11 +60,6 @@ function TransactionsPage() {
                 headerName: 'Address',
                 field: 'locationAddress',
                 width: 220,
-            },
-            {
-                headerName: 'IdToken',
-                field: 'idToken',
-                width: 120,
             },
             {
                 headerName: 'Active',
@@ -150,8 +115,50 @@ function TransactionsPage() {
                 flex: 1,
                 minWidth: 180,
             },
-        ],
-        []
+        ];
+
+            if (!hideUsers) {
+                cols.splice(
+                    1,
+                    0,
+                    {
+                        headerName: 'User Email',
+                        field: 'userEmail',
+                        width: 220,
+                        filter: 'agTextColumnFilter',
+                    },
+                    {
+                        headerName: 'Company',
+                        colId: 'companyName',
+                        width: 200,
+                        filter: 'agTextColumnFilter',
+                        valueGetter: (p) => p.data?.company?.name ?? '',
+                    },
+                    {
+                        headerName: 'Company PIB',
+                        colId: 'companyPib',
+                        width: 150,
+                        filter: 'agTextColumnFilter',
+                        valueGetter: (p) => p.data?.company?.pib ?? '',
+                    },
+                    {
+                        headerName: 'Company MB',
+                        colId: 'companyMb',
+                        width: 150,
+                        filter: 'agTextColumnFilter',
+                        valueGetter: (p) => p.data?.company?.mb ?? '',
+                    },
+                    {
+                        headerName: 'IdToken',
+                        field: 'idToken',
+                        width: 120,
+                    }
+                );
+            }
+
+            return cols;
+        },
+        [hideUsers]
     );
 
     const rowData = useMemo(() => {

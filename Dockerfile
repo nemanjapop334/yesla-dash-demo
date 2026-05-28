@@ -15,6 +15,8 @@ COPY . .
 # Buildujemo aplikaciju (uz korišćenje ARG varijabli ako postoje)
 ARG REACT_APP_API_BASE_URL
 ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
+ARG REACT_APP_HIDE_USERS
+ENV REACT_APP_HIDE_USERS=$REACT_APP_HIDE_USERS
 
 RUN npm run build
 

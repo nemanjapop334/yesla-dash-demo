@@ -7,6 +7,8 @@ import UsersPage from './pages/UsersPage';
 import ChargingNavigationTabs from './components/ChargingNavigationTabs';
 
 function App() {
+  const hideUsers = process.env.REACT_APP_HIDE_USERS === 'true';
+
   return (
     <div>
       {/* TAB NAVIGATION */}
@@ -18,7 +20,10 @@ function App() {
           <Route path="/" element={<Navigate to="/chargers" replace />} />
           <Route path="/chargers" element={<ChargersPage />} />
           <Route path="/transactions" element={<TransactionsPage />} />
-          <Route path="/users" element={<UsersPage />} />
+          <Route
+            path="/users"
+            element={hideUsers ? <Navigate to="/chargers" replace /> : <UsersPage />}
+          />
         </Routes>
       </main>
     </div>
