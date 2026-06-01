@@ -30,11 +30,20 @@ function ChargersPage() {
                 field: 'isOnline',
                 width: 110,
                 valueFormatter: (p) => (p.value ? 'Yes' : 'No'),
-                cellStyle: (p) => ({
-                    color: p.value ? '#198754' : '#dc3545',
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                }),
+                cellStyle: (p) =>
+                    p.value
+                        ? {
+                              backgroundColor: '#d1e7dd',
+                              color: '#0f5132',
+                              fontWeight: 'bold',
+                              textAlign: 'center',
+                          }
+                        : {
+                              backgroundColor: '#f8d7da',
+                              color: '#842029',
+                              fontWeight: 'bold',
+                              textAlign: 'center',
+                          },
             },
             {
                 headerName: 'Location name',
@@ -72,6 +81,13 @@ function ChargersPage() {
                 filter: true,
                 cellStyle: (p) => {
                     const s = p.value;
+                    if (s === 'Offline') {
+                        return {
+                            backgroundColor: '#f8d7da',
+                            color: '#842029',
+                            fontWeight: 'bold',
+                        };
+                    }
                     if (s === 'Preparing') {
                         return {
                             backgroundColor: '#fff3cd',
@@ -109,7 +125,7 @@ function ChargersPage() {
                 city: station.Location?.city ?? '',
                 state: station.Location?.state ?? '',
                 connectorId: conn.connectorId,
-                status: conn.status,
+                status: station.isOnline ? conn.status : 'Offline',
             }))
         );
     }, [data]);
